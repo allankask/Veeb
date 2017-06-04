@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://DESKTOP-IHKSP74:8080/ProductWebApplication/ProductService?wsdl" uri="wsdl/DESKTOP-IHKSP74_8080/ProductWebApplication/ProductService.wsdl"/>
+</catalog>

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+	xmlns:tns="http://www.ttu.ee/idu0075/2015/ws/invoice" 
+	targetNamespace="http://www.ttu.ee/idu0075/2015/ws/invoice">
+	<wsdl:types>
+		<xs:schema  targetNamespace="http://www.ttu.ee/idu0075/2015/ws/invoice" elementFormDefault="qualified">
+			
+			
+			<xs:complexType name="productType">
+				<xs:sequence>
+					<xs:element name="id" type="xs:integer"/>
+					<xs:element name="productCode" type="xs:string"/>
+					<xs:element name="name" type="xs:string"/>
+					<xs:element name="manufacturer" type="xs:string"/>
+					<xs:element name="describeProduct" minOccurs="0" maxOccurs="1" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="categoryProductType">
+				<xs:sequence>
+					<xs:element name="product" type="tns:productType"/>
+					<xs:element name="quantity" type="xs:integer"/>
+					<xs:element name="unitPrice" type="xs:double"/>
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:complexType name="categoryProductListType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="categoryProduct" type="tns:categoryProductType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="categoryType">
+				<xs:sequence>
+					<xs:element name="id" type="xs:integer"/>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="categoryName" type="xs:string"/>
+					<xs:element name="categoryProductList" type="tns:categoryProductListType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="getProductRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="token" type="xs:string"/>
+						<xs:element name="id" type="xs:integer"/>
+                                                <xs:element name="productCode" type="xs:integer"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="getProductResponse" type="tns:productType"/>
+
+			<xs:element name="addProductRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="token" type="xs:string"/>
+						<xs:element name="name" type="xs:string"/>
+						<xs:element name="productCode" type="xs:string"/>
+						<xs:element name="manufacturer" type="xs:string"/>
+                                                <xs:element name="describeProduct" minOccurs="0" maxOccurs="1" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="addProductResponse" type="tns:productType"/>
+
+			<xs:element name="getProductListRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="token" type="xs:string"/>
+						<xs:element name="productCode" type="xs:string"/>
+						<xs:element name="manufacturer" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getProductListResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="product" type="tns:productType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getCategoryRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="token" type="xs:string"/>
+						<xs:element name="id" type="xs:integer"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="getCategoryResponse" type="tns:categoryType"/>
+
+			<xs:element name="addCategoryRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="token" type="xs:string"/>
+						<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<xs:element name="categoryName" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="addCategoryResponse" type="tns:categoryType"/>
+
+			<xs:element name="getCategoryListRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="token" type="xs:string"/>
+						<xs:element minOccurs="0" name="hasRelatedProducts">
+						  <xs:simpleType>
+							<xs:restriction base="xs:string">
+							  <xs:pattern value="jah|ei"/>
+							</xs:restriction>
+						  </xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getCategoryListResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="category" type="tns:categoryType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getCategoryProductListRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="token" type="xs:string"/>
+						<xs:element name="categoryId" type="xs:integer"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="getCategoryProductListResponse" type="tns:categoryProductListType"/>
+
+			<xs:element name="addCategoryProductRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="token" type="xs:string"/>
+						<xs:element name="productId" type="xs:integer"/>
+						<xs:element name="categoryId" type="xs:integer"/>
+						<xs:element name="quantity" type="xs:integer"/>
+						<xs:element name="unitPrice" type="xs:double"/>
+					
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="addCategoryProductResponse" type="tns:categoryProductType"/>
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="getProductMessageRequest">
+		<wsdl:part name="parameter" element="tns:getProductRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getProductMessageResponse">
+		<wsdl:part name="parameter" element="tns:getProductResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addProductMessageRequest">
+		<wsdl:part name="parameter" element="tns:addProductRequest"/>
+	</wsdl:message>
+	<wsdl:message name="addProductMessageResponse">
+		<wsdl:part name="parameter" element="tns:addProductResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getProductListMessageRequest">
+		<wsdl:part name="parameter" element="tns:getProductListRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getProductListMessageResponse">
+		<wsdl:part name="parameter" element="tns:getProductListResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getCategoryMessageRequest">
+		<wsdl:part name="parameter" element="tns:getCategoryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getCategoryMessageResponse">
+		<wsdl:part name="parameter" element="tns:getCategoryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addCategoryMessageRequest">
+		<wsdl:part name="parameter" element="tns:addCategoryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="addCategoryMessageResponse">
+		<wsdl:part name="parameter" element="tns:addCategoryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getCategoryListMessageRequest">
+		<wsdl:part name="parameter" element="tns:getCategoryListRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getCategoryListMessageResponse">
+		<wsdl:part name="parameter" element="tns:getCategoryListResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getCategoryProductListMessageRequest">
+		<wsdl:part name="parameter" element="tns:getCategoryProductListRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getCategoryProductListMessageResponse">
+		<wsdl:part name="parameter" element="tns:getCategoryProductListResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addCategoryProductMessageRequest">
+		<wsdl:part name="parameter" element="tns:addCategoryProductRequest"/>
+	</wsdl:message>
+	<wsdl:message name="addCategoryProductMessageResponse">
+		<wsdl:part name="parameter" element="tns:addCategoryProductResponse"/>
+	</wsdl:message>
+
+	<wsdl:portType name="ProductPortType">
+		<wsdl:operation name="getProduct">
+			<wsdl:input message="tns:getProductMessageRequest"/>
+			<wsdl:output message="tns:getProductMessageResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addProduct">
+			<wsdl:input message="tns:addProductMessageRequest"/>
+			<wsdl:output message="tns:addProductMessageResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getProductList">
+			<wsdl:input message="tns:getProductListMessageRequest"/>
+			<wsdl:output message="tns:getProductListMessageResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getCategory">
+			<wsdl:input message="tns:getCategoryMessageRequest"/>
+			<wsdl:output message="tns:getCategoryMessageResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addCategory">
+			<wsdl:input message="tns:addCategoryMessageRequest"/>
+			<wsdl:output message="tns:addCategoryMessageResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getCategoryList">
+			<wsdl:input message="tns:getCategoryListMessageRequest"/>
+			<wsdl:output message="tns:getCategoryListMessageResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getCategoryProductList">
+			<wsdl:input message="tns:getCategoryProductListMessageRequest"/>
+			<wsdl:output message="tns:getCategoryProductListMessageResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="addCategoryProduct">
+			<wsdl:input message="tns:addCategoryProductMessageRequest"/>
+			<wsdl:output message="tns:addCategoryProductMessageResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ProductBinding" type="tns:ProductPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getProduct">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addProduct">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProductList">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		<wsdl:operation name="getCategory">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addCategory">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCategoryList">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>	
+		<wsdl:operation name="getCategoryProductList">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="addCategoryProduct">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ProductService">
+		<wsdl:port name="ProductPort" binding="tns:ProductBinding">
+			<soap:address location="Empty"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
